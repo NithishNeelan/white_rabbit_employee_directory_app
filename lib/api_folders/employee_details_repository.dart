@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class EmployeeDetailsRepository {
-  List<EmployeeDetailsModel?>? employeeList;
+  List<EmployeeDetailsModel?> employeeList = [];
 
   /// API call for getting the employee details.
   Future<List<EmployeeDetailsModel?>?>? getEmployeeDetails() async {
@@ -13,10 +13,10 @@ class EmployeeDetailsRepository {
         .get(Uri.parse('http://www.mocky.io/v2/5d565297300000680030a986'));
     if (response.statusCode == 200) {
       var responseBody = convert.jsonDecode(response.body);
-      var employeeResponse =
-          responseBody.map((e) => EmployeeDetailsModel.fromJson(e)).toList();
-      employeeList = employeeResponse;
-      return employeeResponse;
+      responseBody.forEach((e) {
+        employeeList.add(EmployeeDetailsModel.fromJson(e));
+      });
+      return employeeList;
     } else {
       debugPrint('Request failed with status: ${response.statusCode}.');
     }

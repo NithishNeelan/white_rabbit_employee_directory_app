@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 /// Constants used in this page.
 const _spaceBetweenComponents = SizedBox(height: 10.0);
+const _contentPadding = EdgeInsets.all(10.0);
 
 class EmployeeDetailsPage extends StatefulWidget {
   const EmployeeDetailsPage({Key? key, this.model}) : super(key: key);
@@ -56,7 +57,10 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
           ),
           title: const Text('Employee Details'),
         ),
-        body: _detailsPage(context),
+        body: Padding(
+          padding: _contentPadding,
+          child: _detailsPage(context),
+        ),
       );
 
   @override

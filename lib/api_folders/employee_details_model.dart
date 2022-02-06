@@ -33,6 +33,18 @@ class EmployeeDetailsModel {
     company =
         json['company'] != null ? Company.fromJson(json['company']) : null;
   }
+
+  EmployeeDetailsModel.copy(EmployeeDetailsModel model) {
+    id = model.id;
+    name = model.name;
+    username = model.username;
+    email = model.email;
+    profileImage = model.profileImage;
+    address = model.address != null ? Address.copy(model.address!) : null;
+    company = model.company != null ? Company.copy(model.company!) : null;
+    phone = model.phone;
+    website = model.website;
+  }
 }
 
 class Address {
@@ -51,6 +63,14 @@ class Address {
     zipcode = json['zipcode'];
     geo = json['geo'] != null ? Geo.fromJson(json['geo']) : null;
   }
+
+  Address.copy(Address model) {
+    street = model.street;
+    suite = model.suite;
+    city = model.city;
+    zipcode = model.zipcode;
+    geo = model.geo != null ? Geo.copy(model.geo!) : null;
+  }
 }
 
 class Geo {
@@ -62,6 +82,10 @@ class Geo {
   Geo.fromJson(Map<String, dynamic> json) {
     lat = json['lat'];
     lng = json['lng'];
+  }
+  Geo.copy(Geo model) {
+    lat = model.lat;
+    lng = model.lng;
   }
 }
 
@@ -76,5 +100,10 @@ class Company {
     name = json['name'];
     catchPhrase = json['catchPhrase'];
     bs = json['bs'];
+  }
+  Company.copy(Company model) {
+    name = model.name;
+    catchPhrase = model.catchPhrase;
+    bs = model.bs;
   }
 }

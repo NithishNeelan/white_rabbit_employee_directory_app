@@ -21,24 +21,48 @@ class EmployeeSearchDelegate extends SearchDelegate {
     );
   }
 
+  List<EmployeeDetailsModel?>? _suggestedList(String query) {
+    List<EmployeeDetailsModel?>? _searchList = [];
+    employeeList?.forEach((employee) {
+      if (employee!.name!.toLowerCase().contains(query)) {
+        _searchList.add(EmployeeDetailsModel.copy(employee));
+      }
+    });
+    return _searchList;
+  }
+
   @override
   Widget buildResults(BuildContext context) {
-    if (query.isNotEmpty) {
-      return ListView.builder(
-          itemBuilder: (BuildContext context, int employeeIndex) => InkWell(
-                child: ListTile(
-                    title: Text(employeeList?[employeeIndex]?.name ?? '')),
-                onTap: () {
-                  onPassengerClick?.call(employeeList?[employeeIndex]);
-                },
-              ));
-    } else {
-      return const Text('Empty');
-    }
+    return Container();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Column();
+    if (query.isNotEmpty) {
+      List<EmployeeDetailsModel?> _suggestionList = [];
+      _suggestionList = _suggestedList(query) ?? [];
+      return ListView.builder(
+          itemCount: _suggestionList.length,
+          itemBuilder: (BuildContext context, int employeeIndex) => InkWell(
+                child: ListTile(
+                    title: Text(_suggestionList[employeeIndex]?.name ?? '')),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  onPassengerClick?.call(_suggestionList[employeeIndex]);
+                },
+              ));
+    } else {
+      return ListView.builder(
+          itemCount: employeeList!.length,
+          itemBuilder: (BuildContext context, int employeeIndex) => InkWell(
+                child: ListTile(
+                    title: Text(employeeList![employeeIndex]?.name ?? '')),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  onPassengerClick?.call(employeeList![employeeIndex]);
+                },
+              ));
+      ;
+    }
   }
 }

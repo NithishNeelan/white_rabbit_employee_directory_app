@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 
 import '../api_folders/employee_details_repository.dart';
 
+/// Constants used in this page.
+const _contentPadding = EdgeInsets.all(10.0);
+
 /// Is the starting screen where the user reaches on opening the app.
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -58,27 +61,26 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       );
 
   /// Body of the scaffold page widget.
-  Widget _scaffoldBody(BuildContext context) =>
-      FutureBuilder<List<EmployeeDetailsModel?>?>(
+  Widget _scaffoldBody(BuildContext context) => FutureBuilder<void>(
         future: _employeeDetailsRepository?.getEmployeeDetails(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
+            return ListView(
               children: [
                 const Text('Following are the list of employees'),
                 ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int itemIndex) =>
                         _listTile(
                             context,
                             _employeeDetailsRepository
-                                ?.employeeList?[itemIndex]),
-                    itemCount: _employeeDetailsRepository?.employeeList?.length)
+                                ?.employeeList[itemIndex]),
+                    itemCount: _employeeDetailsRepository?.employeeList.length)
               ],
             );
           }
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       );
 
@@ -88,7 +90,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             title: const Text('Welcome'),
             actions: [_searchButton(context)],
             leading: null),
-        body: _scaffoldBody(context),
+        body: Padding(
+          padding: _contentPadding,
+          child: _scaffoldBody(context),
+        ),
       );
 
   @override
